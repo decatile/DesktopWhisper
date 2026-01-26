@@ -57,7 +57,11 @@ namespace ShortWhisper
                 Text = "ShortWhisper is working",
                 ContextMenuStrip = new ContextMenuStrip()
             };
-            trayIcon.ContextMenuStrip.Items.Add("Record", null, (a, b) => { form.Init(); form.Show(); });
+            trayIcon.MouseClick += (a, b) => {
+                if (b.Button != MouseButtons.Left) return;
+                form.Init();
+                form.Show();
+            };
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, (a, b) => Application.Exit());
 
             Process whisperServer;
