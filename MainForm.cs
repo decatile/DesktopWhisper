@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace ShortWhisper
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private Config _config;
 
@@ -20,18 +20,20 @@ namespace ShortWhisper
         private string _waveFilePath;
         private WaveFileWriter _waveFileWriter;
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
 
-        public Form1(Config config)
+        public MainForm(Config config)
         {
-            _config = config;
             InitializeComponent();
-            bool ok = RegisterHotKey(Handle, 1, 0, (int)Keys.F12);
-            if (!ok)
-            {
-                MessageBox.Show($"Hotkey error: {Marshal.GetLastWin32Error()}");
-            }
+            _config = config;
+            ShowInTaskbar = false;
+            FormBorderStyle = FormBorderStyle.None;
+            //bool ok = RegisterHotKey(Handle, 1, 0, (int)Keys.F12);
+            //if (!ok)
+            //{
+            //    MessageBox.Show($"Hotkey error: {Marshal.GetLastWin32Error()}");
+            //}
         }
 
         protected override void WndProc(ref Message m)
@@ -60,6 +62,7 @@ namespace ShortWhisper
                 Invoke(new MethodInvoker(() => WaveIn_RecordingStopped(sender, e)));
                 return;
             }
+            Hide();
             _waveFileWriter.Close();
             _waveFileWriter = null;
             using (var stream = new FileStream(_waveFilePath, FileMode.Open))
@@ -76,12 +79,18 @@ namespace ShortWhisper
                 var content = resp.Content.ReadAsStringAsync().Result;
                 Clipboard.SetText(content);
             }
+            new NotificationForm().Show();
             Close();
         }
 
         private void SendButton_Click(object sender, EventArgs e)
         {
             _waveIn.StopRecording();
+        }
+
+        private void AbortButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         public void Init()
@@ -109,11 +118,6 @@ namespace ShortWhisper
                 Hide();
                 e.Cancel = true;
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

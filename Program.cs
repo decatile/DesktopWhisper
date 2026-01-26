@@ -44,10 +44,7 @@ namespace ShortWhisper
                 return;
             }
 
-            var form = new Form1(configObject)
-            {
-                ShowInTaskbar = false
-            };
+            var form = new MainForm(configObject);
             form.Hide();
 
             var trayIcon = new NotifyIcon
