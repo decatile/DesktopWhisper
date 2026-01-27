@@ -56,6 +56,7 @@ namespace ShortWhisper
             var content = resp.Content.ReadAsStringAsync().Result;
             Clipboard.SetText(content);
             new NotificationForm().Show();
+            _waveFileStream = null;
             Close();
         }
 
@@ -74,6 +75,7 @@ namespace ShortWhisper
             _waveIn.DataAvailable -= WaveIn_DataAvailable;
             _waveIn.RecordingStopped -= WaveIn_RecordingStopped;
             _waveIn.StopRecording();
+            _waveFileStream?.Dispose();
             File.Delete(_filePath);
         }
     }
