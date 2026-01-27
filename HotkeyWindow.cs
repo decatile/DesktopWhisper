@@ -20,7 +20,7 @@ namespace ShortWhisper
         {
             CreateHandle(new CreateParams());
             _onHotkey = onHotkey;
-            RegisterHotKey(Handle, HOTKEY_ID, 0, (int)Keys.F12);
+            RegisterHotKey(Handle, HOTKEY_ID, 0x0008 | 0x0001, (int)Keys.P);
         }
 
         protected override void WndProc(ref Message m)

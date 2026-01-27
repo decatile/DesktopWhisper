@@ -3,6 +3,7 @@ using ShortWhisper.Properties;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ShortWhisper
@@ -20,6 +21,7 @@ namespace ShortWhisper
         public MainForm()
         {
             InitializeComponent();
+            TopMost = true;
             ShowInTaskbar = false;
             FormBorderStyle = FormBorderStyle.None;
             _innerFileStream = new FileStream(_filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
@@ -54,7 +56,8 @@ namespace ShortWhisper
             };
             var resp = client.PostAsync($"http://localhost:{Settings.Default.ServerPort}/inference", formData).Result;
             var content = resp.Content.ReadAsStringAsync().Result;
-            Clipboard.SetText(content);
+            Clipboard.SetText(Regex.Replace(content, "\\s+", " ").Trim());
+            SendKeys.Send("^{v}");
             new NotificationForm().Show();
             _waveFileStream = null;
             Close();

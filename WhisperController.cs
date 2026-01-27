@@ -7,15 +7,14 @@ namespace ShortWhisper
 {
     internal class WhisperController
     {
-        public static Process Process = null;
+        private static Process _process = null;
 
         public static void Start()
         {
-            Process?.Kill();
-            Process = null;
+            Kill();
             try
             {
-                Process = Process.Start(new ProcessStartInfo(
+                _process = Process.Start(new ProcessStartInfo(
                         Settings.Default.ServerBinaryPath,
                         $"-m {Settings.Default.ModelPath} --port {Settings.Default.ServerPort}"
                 )
@@ -24,6 +23,15 @@ namespace ShortWhisper
             catch (Exception e)
             {
                 MessageBox.Show($"Cannot start whisper server. Perhaps, you need to fill settings. Then save and restart server.\nInner error: {e.Message}");
+            }
+        }
+
+        public static void Kill()
+        {
+            if (_process != null && !_process.HasExited)
+            {
+                _process.Kill();
+                _process = null;
             }
         }
     }

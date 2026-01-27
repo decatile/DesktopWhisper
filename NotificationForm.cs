@@ -15,8 +15,8 @@ namespace ShortWhisper
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
             Location = new Point(
-                screen.Right - Width - 10,
-                screen.Bottom - Height - 10
+                screen.Right - Width - 20,
+                screen.Bottom - Height - 20
             );
             var timer = new Timer();
             timer.Interval = 1000;

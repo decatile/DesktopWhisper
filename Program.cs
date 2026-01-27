@@ -33,7 +33,7 @@ namespace ShortWhisper
 
             WhisperController.Start();
 
-            Application.ApplicationExit += (a, b) => WhisperController.Process?.Kill();
+            Application.ApplicationExit += (a, b) => WhisperController.Kill();
 
             Application.Run();
         }
