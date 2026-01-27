@@ -1,12 +1,7 @@
-﻿using Newtonsoft.Json;
-using ShortWhisper.Properties;
+﻿using ShortWhisper.Properties;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ShortWhisper
@@ -22,60 +17,36 @@ namespace ShortWhisper
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            string configText;
-            try
-            {
-                configText = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".shortwhisper.config.json"));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Config file not found! Should be in ~/.shortwhisper.config.json. Error: {e}");
-                return;
-            }
-
-            Config configObject;
-            try
-            {
-                configObject = JsonConvert.DeserializeObject<Config>(configText);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Cannot deserialize config file: ${e}");
-                return;
-            }
-
-            var form = new MainForm(configObject);
-            form.Hide();
+            new HotkeyWindow(() => { new MainForm().Show(); });
 
             var trayIcon = new NotifyIcon
             {
                 Icon = SystemIcons.Application,
                 Visible = true,
-                Text = "ShortWhisper is working",
+                Text = "Short Whisper is working",
                 ContextMenuStrip = new ContextMenuStrip()
             };
-            trayIcon.MouseClick += (a, b) => {
-                if (b.Button != MouseButtons.Left) return;
-                form.Init();
-                form.Show();
-            };
+            trayIcon.MouseClick += (a, b) => { if (b.Button == MouseButtons.Left) new MainForm().Show(); };
+            trayIcon.ContextMenuStrip.Items.Add("Settings", null, (a, b) => new SettingsForm().Show());
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, (a, b) => Application.Exit());
 
-            Process whisperServer;
+            Process whisperServer = null;
             try
             {
-                whisperServer = Process.Start(new ProcessStartInfo(configObject.BinaryPath, $"-m {configObject.ModelPath} --port {configObject.ServerPort}")
+                whisperServer = Process.Start(new ProcessStartInfo(
+                    Settings.Default.ServerBinaryPath,
+                    $"-m {Settings.Default.ModelPath} --port {Settings.Default.ServerPort}"
+                )
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
                 });
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Cannot start whisper server: {e}");
-                return;
+                MessageBox.Show($"Cannot start whisper server. Perhaps, you need to fill settings. Then save and restart app.\nInner error: {e.Message}");
             }
 
-            Application.ApplicationExit += (a, b) => whisperServer.Kill();
+            Application.ApplicationExit += (a, b) => whisperServer?.Kill();
 
             Application.Run();
         }

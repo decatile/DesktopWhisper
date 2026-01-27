@@ -1,58 +1,37 @@
 ﻿using NAudio.Wave;
+using ShortWhisper.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ShortWhisper
 {
     public partial class MainForm : Form
     {
-        private Config _config;
-
         private WaveInEvent _waveIn = new WaveInEvent();
-        private string _waveFilePath;
-        private WaveFileWriter _waveFileWriter;
+        private string _filePath = Path.GetTempFileName() + ".wav";
+        private FileStream _innerFileStream;
+        private WaveFileWriter _waveFileStream;
 
         //[DllImport("user32.dll", SetLastError = true)]
         //public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
 
-        public MainForm(Config config)
+        public MainForm()
         {
             InitializeComponent();
-            _config = config;
             ShowInTaskbar = false;
             FormBorderStyle = FormBorderStyle.None;
-            //bool ok = RegisterHotKey(Handle, 1, 0, (int)Keys.F12);
-            //if (!ok)
-            //{
-            //    MessageBox.Show($"Hotkey error: {Marshal.GetLastWin32Error()}");
-            //}
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == 0x0312)
-            {
-                int id = m.WParam.ToInt32();
-                if (id == 1)
-                {
-                    Init();
-                    Show();
-                }
-            }
-            base.WndProc(ref m);
+            _innerFileStream = new FileStream(_filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+            _waveFileStream = new WaveFileWriter(_innerFileStream, _waveIn.WaveFormat);
+            _waveIn.DataAvailable += WaveIn_DataAvailable;
+            _waveIn.RecordingStopped += WaveIn_RecordingStopped;
+            _waveIn.StartRecording();
         }
 
         private void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            _waveFileWriter.Write(e.Buffer, 0, e.BytesRecorded);
+            _waveFileStream.Write(e.Buffer, 0, e.BytesRecorded);
         }
 
         private void WaveIn_RecordingStopped(object sender, StoppedEventArgs e)
@@ -63,22 +42,19 @@ namespace ShortWhisper
                 return;
             }
             Hide();
-            _waveFileWriter.Close();
-            _waveFileWriter = null;
-            using (var stream = new FileStream(_waveFilePath, FileMode.Open))
+            _waveFileStream.Flush();
+            _innerFileStream.Seek(0, SeekOrigin.Begin);
+            var client = new HttpClient();
+            var formData = new MultipartFormDataContent
             {
-                var client = new HttpClient();
-                var formData = new MultipartFormDataContent
-                    {
-                        { new StreamContent(stream), "file", Path.GetFileName(_waveFilePath) },
-                        { new StringContent("0"), "temperature" },
-                        { new StringContent(_config.Language), "language" },
-                        { new StringContent("text"), "response_format" }
-                    };
-                var resp = client.PostAsync($"http://localhost:{_config.ServerPort}/inference", formData).Result;
-                var content = resp.Content.ReadAsStringAsync().Result;
-                Clipboard.SetText(content);
-            }
+                { new StreamContent(_innerFileStream), "file", Path.GetFileName(_filePath) },
+                { new StringContent("0"), "temperature" },
+                { new StringContent(Settings.Default.Language), "language" },
+                { new StringContent("text"), "response_format" }
+            };
+            var resp = client.PostAsync($"http://localhost:{Settings.Default.ServerPort}/inference", formData).Result;
+            var content = resp.Content.ReadAsStringAsync().Result;
+            Clipboard.SetText(content);
             new NotificationForm().Show();
             Close();
         }
@@ -93,31 +69,13 @@ namespace ShortWhisper
             Close();
         }
 
-        public void Init()
-        {
-            _waveFilePath = Path.GetTempFileName() + ".wav";
-            _waveFileWriter = new WaveFileWriter(_waveFilePath, _waveIn.WaveFormat);
-            _waveIn.DataAvailable += WaveIn_DataAvailable;
-            _waveIn.RecordingStopped += WaveIn_RecordingStopped;
-            _waveIn.StartRecording();
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_Closed(object sender, FormClosedEventArgs e)
         {
             _waveIn.DataAvailable -= WaveIn_DataAvailable;
             _waveIn.RecordingStopped -= WaveIn_RecordingStopped;
             _waveIn.StopRecording();
-            _waveFileWriter?.Close();
-            File.Delete(_waveFilePath);
-            if (e.CloseReason == CloseReason.ApplicationExitCall)
-            {
-
-            }
-            else
-            {
-                Hide();
-                e.Cancel = true;
-            }
+            _waveFileStream.Close();
+            File.Delete(_filePath);
         }
     }
 }
