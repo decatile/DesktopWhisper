@@ -63,6 +63,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Desktop Whisper";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_Closed);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainForm_KeyPress);
             this.ResumeLayout(false);
 
         }

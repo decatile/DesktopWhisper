@@ -35,6 +35,7 @@ namespace DesktopWhisper
                 cursor.Y - 30
             );
             TopMost = true;
+            KeyPreview = true;
             ShowInTaskbar = false;
             FormBorderStyle = FormBorderStyle.None;
             _innerFileStream = new FileStream(_filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
@@ -84,14 +85,24 @@ namespace DesktopWhisper
             Close();
         }
 
-        private void SendButton_Click(object sender, EventArgs e)
+        private void SendButton_ClickInternal()
         {
             _waveIn.StopRecording();
         }
 
-        private void AbortButton_Click(object sender, EventArgs e)
+        private void SendButton_Click(object sender, EventArgs e)
+        {
+            SendButton_ClickInternal();
+        }
+
+        private void AbortButton_ClickInternal()
         {
             Close();
+        }
+
+        private void AbortButton_Click(object sender, EventArgs e)
+        {
+            AbortButton_ClickInternal();
         }
 
         private void MainForm_Closed(object sender, FormClosedEventArgs e)
@@ -101,6 +112,21 @@ namespace DesktopWhisper
             _waveIn.StopRecording();
             _waveFileStream?.Dispose();
             File.Delete(_filePath);
+        }
+
+        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch (e.KeyChar)
+            {
+                case 'p':
+                    e.Handled = true;
+                    SendButton_ClickInternal();
+                    break;
+                case '[':
+                    e.Handled = true;
+                    AbortButton_ClickInternal();
+                    break;
+            }
         }
     }
 }
