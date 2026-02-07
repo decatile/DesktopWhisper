@@ -74,7 +74,8 @@ namespace DesktopWhisper
                 { new StringContent(Settings.Default.Language), "language" },
                 { new StringContent("text"), "response_format" }
             };
-            var resp = client.PostAsync($"http://localhost:{Settings.Default.ServerPort}/inference", formData).Result;
+            var url = Settings.Default.IsExternal ? Settings.Default.ExternalPath : $"http://localhost:{Settings.Default.ServerPort}/inference";
+            var resp = client.PostAsync(url, formData).Result;
             var content = resp.Content.ReadAsStringAsync().Result;
             Clipboard.SetText(Regex.Replace(content, "\\s+", " ").Trim());
             if (Settings.Default.PasteImmediately) SendKeys.Send("^{v}");

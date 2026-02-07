@@ -22,4 +22,4 @@ After saving, you usually need to restart the whisper-server (tray icon → **Re
 
 ## Design
 
-Desktop Whisper is a background service that spawns its own whisper-server instance. This allows them to be managed together, simplifying interaction. It might be worth adding support for using an external server in the future.
+Desktop Whisper is a background service that spawns its own whisper-server instance. This allows them to be managed together, simplifying interaction. Using an external server is also supported.

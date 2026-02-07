@@ -28,10 +28,10 @@ namespace DesktopWhisper
             };
             trayIcon.MouseClick += (a, b) => { if (b.Button == MouseButtons.Left) new MainForm().Show(); };
             trayIcon.ContextMenuStrip.Items.Add("Settings", null, (a, b) => new SettingsForm().Show());
-            trayIcon.ContextMenuStrip.Items.Add("Restart server", null, (a, b) => WhisperController.Start());
+            trayIcon.ContextMenuStrip.Items.Add("Restart server", null, (a, b) => { if (!Settings.Default.IsExternal) WhisperController.Start(); });
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, (a, b) => Application.Exit());
 
-            WhisperController.Start();
+            if (!Settings.Default.IsExternal) WhisperController.Start();
 
             Application.ApplicationExit += (a, b) =>
             {

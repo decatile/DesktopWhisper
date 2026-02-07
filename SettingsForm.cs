@@ -15,6 +15,8 @@ namespace DesktopWhisper
             langTextBox.Text = Settings.Default.Language;
             popupTextBox.Text = Convert.ToString(Settings.Default.ShowPopup);
             pasteTextBox.Text = Convert.ToString(Settings.Default.PasteImmediately);
+            endpointTextBox.Text = Settings.Default.ExternalPath;
+            externalCheckBox.Checked = Settings.Default.IsExternal;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -25,7 +27,21 @@ namespace DesktopWhisper
             Settings.Default.Language = langTextBox.Text;
             Settings.Default.ShowPopup = Convert.ToBoolean(popupTextBox.Text);
             Settings.Default.PasteImmediately = Convert.ToBoolean(pasteTextBox.Text);
+            Settings.Default.ExternalPath = endpointTextBox.Text;
+            var externalPrev = Settings.Default.IsExternal;
+            Settings.Default.IsExternal = externalCheckBox.Checked;
             Settings.Default.Save();
+            if (externalPrev != Settings.Default.IsExternal)
+            {
+                if (Settings.Default.IsExternal)
+                {
+                    WhisperController.Kill();
+                }
+                else
+                {
+                    WhisperController.Start();
+                }
+            }
         }
     }
 }

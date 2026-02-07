@@ -41,11 +41,18 @@
             this.popupTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.pasteTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.externalCheckBox = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.endpointTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // serverPathTextBox
             // 
-            this.serverPathTextBox.Location = new System.Drawing.Point(12, 29);
+            this.serverPathTextBox.Location = new System.Drawing.Point(14, 42);
             this.serverPathTextBox.Name = "serverPathTextBox";
             this.serverPathTextBox.Size = new System.Drawing.Size(402, 20);
             this.serverPathTextBox.TabIndex = 0;
@@ -53,7 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(15, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(301, 13);
             this.label1.TabIndex = 1;
@@ -62,7 +69,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 68);
+            this.label2.Location = new System.Drawing.Point(15, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(268, 13);
             this.label2.TabIndex = 3;
@@ -70,7 +77,7 @@
             // 
             // modelPathTextBox
             // 
-            this.modelPathTextBox.Location = new System.Drawing.Point(12, 84);
+            this.modelPathTextBox.Location = new System.Drawing.Point(14, 97);
             this.modelPathTextBox.Name = "modelPathTextBox";
             this.modelPathTextBox.Size = new System.Drawing.Size(402, 20);
             this.modelPathTextBox.TabIndex = 2;
@@ -78,7 +85,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 126);
+            this.label3.Location = new System.Drawing.Point(15, 139);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 13);
             this.label3.TabIndex = 5;
@@ -86,7 +93,7 @@
             // 
             // portTextBox
             // 
-            this.portTextBox.Location = new System.Drawing.Point(12, 142);
+            this.portTextBox.Location = new System.Drawing.Point(14, 155);
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(402, 20);
             this.portTextBox.TabIndex = 4;
@@ -94,7 +101,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 182);
+            this.label4.Location = new System.Drawing.Point(15, 195);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(55, 13);
             this.label4.TabIndex = 7;
@@ -102,14 +109,14 @@
             // 
             // langTextBox
             // 
-            this.langTextBox.Location = new System.Drawing.Point(12, 198);
+            this.langTextBox.Location = new System.Drawing.Point(14, 211);
             this.langTextBox.Name = "langTextBox";
             this.langTextBox.Size = new System.Drawing.Size(402, 20);
             this.langTextBox.TabIndex = 6;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 361);
+            this.button1.Location = new System.Drawing.Point(26, 462);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 8;
@@ -120,7 +127,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 237);
+            this.label5.Location = new System.Drawing.Point(27, 359);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(175, 13);
             this.label5.TabIndex = 10;
@@ -128,7 +135,7 @@
             // 
             // popupTextBox
             // 
-            this.popupTextBox.Location = new System.Drawing.Point(12, 253);
+            this.popupTextBox.Location = new System.Drawing.Point(26, 375);
             this.popupTextBox.Name = "popupTextBox";
             this.popupTextBox.Size = new System.Drawing.Size(402, 20);
             this.popupTextBox.TabIndex = 9;
@@ -136,7 +143,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 289);
+            this.label6.Location = new System.Drawing.Point(27, 411);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(148, 13);
             this.label6.TabIndex = 12;
@@ -144,31 +151,84 @@
             // 
             // pasteTextBox
             // 
-            this.pasteTextBox.Location = new System.Drawing.Point(12, 305);
+            this.pasteTextBox.Location = new System.Drawing.Point(26, 427);
             this.pasteTextBox.Name = "pasteTextBox";
             this.pasteTextBox.Size = new System.Drawing.Size(402, 20);
             this.pasteTextBox.TabIndex = 11;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.serverPathTextBox);
+            this.groupBox1.Controls.Add(this.modelPathTextBox);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.portTextBox);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.langTextBox);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(439, 247);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Internal server";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.externalCheckBox);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.endpointTextBox);
+            this.groupBox2.Location = new System.Drawing.Point(12, 265);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(439, 91);
+            this.groupBox2.TabIndex = 14;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "External server";
+            // 
+            // externalCheckBox
+            // 
+            this.externalCheckBox.AutoSize = true;
+            this.externalCheckBox.Location = new System.Drawing.Point(14, 68);
+            this.externalCheckBox.Name = "externalCheckBox";
+            this.externalCheckBox.Size = new System.Drawing.Size(85, 17);
+            this.externalCheckBox.TabIndex = 2;
+            this.externalCheckBox.Text = "Use external";
+            this.externalCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 26);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(89, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Endpoint address";
+            // 
+            // endpointTextBox
+            // 
+            this.endpointTextBox.Location = new System.Drawing.Point(14, 42);
+            this.endpointTextBox.Name = "endpointTextBox";
+            this.endpointTextBox.Size = new System.Drawing.Size(402, 20);
+            this.endpointTextBox.TabIndex = 0;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 396);
+            this.ClientSize = new System.Drawing.Size(469, 508);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.pasteTextBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.popupTextBox);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.langTextBox);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.portTextBox);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.modelPathTextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.serverPathTextBox);
             this.Name = "SettingsForm";
             this.Text = "Settings";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,5 +249,10 @@
         private System.Windows.Forms.TextBox popupTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox pasteTextBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox externalCheckBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox endpointTextBox;
     }
 }

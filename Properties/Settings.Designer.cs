@@ -94,5 +94,29 @@ namespace DesktopWhisper.Properties {
                 this["PasteImmediately"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsExternal {
+            get {
+                return ((bool)(this["IsExternal"]));
+            }
+            set {
+                this["IsExternal"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExternalPath {
+            get {
+                return ((string)(this["ExternalPath"]));
+            }
+            set {
+                this["ExternalPath"] = value;
+            }
+        }
     }
 }
